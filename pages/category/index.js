@@ -8,7 +8,7 @@ Page({
         currentCategory: {},
         goodsCount: 0,
         nowIndex: 0,
-        nowId: 0,
+        nowId: 0,//选中的种类
         list: [],
         allPage: 1,
         allCount: 0,
@@ -51,6 +51,7 @@ Page({
             });
         });
     },
+     //获取当前种类
     getCurrentCategory: function(id) {
         let that = this;
         util.request(api.CatalogCurrent, {
@@ -61,7 +62,10 @@ Page({
             });
         });
     },
+
+    //获取当前页
     getCurrentList: function(id) {
+        console.log("getCurrentList")
         let that = this;
         util.request(api.GetCurrentList, {
             size: that.data.size,
@@ -73,7 +77,7 @@ Page({
                 that.setData({
                     allCount: count,
                     allPage: res.data.currentPage,
-                    list: that.data.list.concat(res.data.data),
+                    list: that.data.list.concat(res.data.data),//将查询数据，追加到集合
                     showNoMore: 1,
                     loading: 0,
                 });
@@ -89,6 +93,7 @@ Page({
     onShow: function() {
         this.getChannelShowInfo();
         let id = this.data.nowId;
+        //从本地缓存中同步获取指定 key 的内容
         let nowId = wx.getStorageSync('categoryId');
         if(id == 0 && nowId === 0){
             return false

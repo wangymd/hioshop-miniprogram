@@ -1,5 +1,7 @@
 <view class="container" wx:if="{{loading == 1}}">
     <view class='contact-wrap' wx:if="{{showContact == 1}}">
+        <!--session-from:会话来源，open-type="contact"时有效(https://developers.weixin.qq.com/miniprogram/dev/component/button.html) -->
+        <!--contact:-->
         <button class="contact-btn" session-from='{"nickName":"{{userInfo.nickname}}","avatarUrl":"{{userInfo.avatar}}"}' open-type="contact">
             <image class='icon' src='/images/icon/contact.png'></image>
             <view class='text'>客服</view>
@@ -9,9 +11,17 @@
         <image class="icon" src="/images/icon/search.png"></image>
         <text class="txt">搜索,发现更多好物</text>
     </view>
-    <view class='banner-wrap' wx:if="{{show_banner && banner.length > 0}}">
-        <swiper class="banner" indicator-dots="true" autoplay="{{autoplay}}" interval="3000" duration="1000"   >
-            <swiper-item wx:for="{{banner}}" wx:key="id">
+
+    <!-- 展示横幅 -->
+    <view class='banner-wrap' wx:if="{{show_banner && banners.length > 0}}">
+        <!-- 滑块视图容器 -->
+        <!--indicator-dots:是否显示面板指示点-->
+        <!--autoplay:是否自动切换-->
+        <!--interval:自动切换时间间隔;duration:滑动动画时长-->
+        <swiper class="banner" indicator-dots="true" autoplay="{{autoplay}}" interval="5000" duration="1000" >
+            <!-- 仅可放置在swiper组件中，宽高自动设置为100% -->
+            <swiper-item wx:for="{{banners}}" wx:key="id">
+                <!--navigator:页面链接。 0商品，1链接 -->
                 <navigator wx:if="{{item.link_type == 0}}" url="/pages/goods/goods?id={{item.goods_id}}">
                     <image src="{{item.image_url}}" background-size="cover"></image>
                 </navigator>
@@ -21,19 +31,21 @@
             </swiper-item>
         </swiper>
     </view>
-    <view class='marquee_box' wx:if="{{notice.length>0 && show_notice == 1}}">
+
+    <!-- 通知 -->
+    <view class='marquee_box' wx:if="{{notices.length>0 && show_notice == 1}}">
         <swiper vertical="{{true}}" class="notice-swiper" indicator-dots="{{false}}" autoplay="{{autoplay}}" interval="2000" duration="1000">
-            <swiper-item wx:for="{{notice}}" wx:key="id" class='notice-wrap'>
-
-                    <view class="icon">
-                        <image src="/images/icon/notice-icon.png" class='img'>
-                        </image>
-                    </view>
-                    <view class='notice-text'>{{item.content}}</view>
-
+            <swiper-item wx:for="{{notices}}" wx:key="id" class='notice-wrap'>
+                <view class="icon">
+                    <image src="/images/icon/notice-icon.png" class='img'>
+                    </image>
+                </view>
+                <view class='notice-text'>{{item.content}}</view>
             </swiper-item>
         </swiper>
     </view>
+
+    <!-- 分类 -->
     <!-- <ad unit-id="adunit-c755904541658aa1" ad-type="grid" grid-opacity="0.8" grid-count="5" ad-theme="white"></ad> -->
     <swiper class="catalog-wrap" indicator-dots="{{false}}" indicator-color="#dedede" indicator-active-color="#e00000" wx:if="{{show_channel}}">
         <swiper-item class="first">
@@ -55,6 +67,8 @@
             </navigator>
         </swiper-item>
     </swiper>
+
+    <!-- 商品 -->
     <view class="goods-container">
         <view class='topic-container' wx:for="{{floorGoods}}" wx:key="id">
             <view class='banner-container' bindtap="goCategory" data-cateid="{{item.id}}" wx:if="{{index_banner_img == 1}}">
@@ -72,16 +86,19 @@
             <view class='list-wrap clearfix'>
                 <view class="new-box {{(iindex+1)%3 == 0?'no-margin':''}}" wx:for="{{item.goodsList}}" wx:for-index="iindex" wx:for-item="iitem" wx:key="id">
                     <navigator hover-class='none' class='navi-url' url="/pages/goods/goods?id={{iitem.id}}">
+                        <!--商品图片-->
                         <view class="box">
                             <image src="{{iitem.list_pic_url}}" class="image">
                                 <view wx:if="{{iitem.is_new == 1}}" class='new-tag'>新品</view>
                             </image>
+                             <!--商品卖空-->
                             <block wx:if="{{iitem.goods_number <= 0}}">
                                 <view class='sold-img'>
                                     <image class='soldout' src='/images/icon/sold-out.png'></image>
                                 </view>
                             </block>
                         </view>
+                        <!--商品名称和价格-->
                         <view class="goods-info {{iitem.goods_number <= 0?'fast-out-status':''}}">
                             <view class="goods-title">{{iitem.name}}</view>
                             <view class='price-container'>
@@ -99,6 +116,7 @@
     <!-- <ad unit-id="adunit-b6fcdb43b7913591"></ad> -->
     <view class="no-more-goods ">没有更多商品啦</view>
 </view>
+<!--数据加载完成后消失-->
 <view class="loading" style="height:{{sysHeight}}px" wx:else>
     <image class="img" src="/images/icon/loading.gif"></image>
     <view class="text">海风吹啊吹</view>

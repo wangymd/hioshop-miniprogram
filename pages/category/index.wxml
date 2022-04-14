@@ -8,23 +8,29 @@
     <view class="catalog">
         <scroll-view class="nav" scroll-y="true">
             <view class="item {{ nowId == 0 ?'active' : ''}}" bindtap="switchCate" data-id="0">全部</view>
+            <!--选中的种类id-->
             <view class="item {{ nowId == item.id?'active' : ''}}" wx:for="{{navList}}" wx:key="id" data-id="{{item.id}}" bindtap="switchCate">{{item.name}}</view>
         </scroll-view>
         <scroll-view class="cate" scroll-y="true" bindscrolltolower="onBottom">
             <block wx:if="{{loading == 0}}">
+                <!--选中种类后展示-->
                 <view class='banner-container' wx:if="{{nowId!= 0 && index_banner_img == 1}}">
                     <image mode='aspectFill' style="width:100%;height:{{currentCategory.p_height}}rpx" src='{{currentCategory.img_url}}'>
                     </image>
                     <view class="bg" style="height:{{currentCategory.p_height}}rpx;line-height:{{currentCategory.p_height}}rpx;"></view>
                     <view class="text" style="height:{{currentCategory.p_height}}rpx;line-height:{{currentCategory.p_height}}rpx;">{{currentCategory.name}}</view>
                 </view>
+                <!--选中种类后商品展示-->
                 <view class='list-wrap clearfix'>
+                    <!--2个商品并排，第1个类选择器goods-box、第2个no-margin-->
                     <view class="goods-box {{(index+1)%2 == 0?'no-margin':''}}" wx:for="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="id">
                         <navigator hover-class='none' class='navi-url' url="/pages/goods/goods?id={{item.id}}">
                             <view class="box">
+                                <!--商品图片，判断是否新品-->
                                 <image src="{{item.list_pic_url}}" class="image">
                                     <view wx:if="{{item.is_new == 1}}" class='new-tag'>新品</view>
                                 </image>
+                                <!--卖空标记-->
                                 <block wx:if="{{item.goods_number <= 0}}">
                                     <!-- <view class='no-goods-mask'></view> -->
                                     <view class='sold-img'>
@@ -32,6 +38,7 @@
                                     </view>
                                 </block>
                             </view>
+                            <!--商品信息-->
                             <view class="goods-info {{item.goods_number <= 0?'fast-out-status':''}}">
                                 <view class="goods-title">{{item.name}}</view>
                                 <view class="goods-intro">{{item.goods_brief}}</view>

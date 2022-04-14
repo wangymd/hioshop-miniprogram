@@ -5,6 +5,7 @@ App({
         deviceInfo: {}
     },
     onLaunch: function() {
+        console.log("app.onLaunch")
         this.data.deviceInfo = wx.getSystemInfoSync();
         console.log(this.data.deviceInfo);
         // 展示本地存储能力
@@ -15,11 +16,13 @@ App({
         wx.login({
             success: res => {
                 // 发送 res.code 到后台换取 openId, sessionKey, unionId
+                console.log(res)
             }
         })
         // 获取用户信息
         wx.getSetting({
             success: res => {
+                console.log(res)
                 if (res.authSetting['scope.userInfo']) {
                     // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
                     wx.getUserInfo({

@@ -12,14 +12,15 @@ Page({
         showChannel: 0,
         showBanner: 0,
         showBannerImg: 0,
-        banner: [],
+        banners: [],
+        notices:[],
         index_banner_img: 0,
         userInfo: {},
         imgurl: '',
         sysHeight: 0,
         loading: 0,
         autoplay:true,
-        showContact:1,
+        showContact:1,//是否展示客服
     },
     onPageScroll: function (e) {
         let scrollTop = e.scrollTop;
@@ -45,7 +46,9 @@ Page({
         })
     },
     goCategory: function (e) {
+        //获取组件上数据
         let id = e.currentTarget.dataset.cateid;
+        //将数据存储在本地缓存中指定的 key 中
         wx.setStorageSync('categoryId', id);
         wx.switchTab({
             url: '/pages/category/index',
@@ -73,9 +76,9 @@ Page({
             if (res.errno === 0) {
                 that.setData({
                     floorGoods: res.data.categoryList,
-                    banner: res.data.banner,
+                    banners: res.data.banner,
                     channel: res.data.channel,
-                    notice: res.data.notice,
+                    notices: res.data.notice,
                     loading: 1,
                 });
                 let cartGoodsCount = '';
@@ -94,9 +97,12 @@ Page({
         });
     },
     onLoad: function (options) {
+        console.log("onLoad")
         this.getChannelShowInfo();
     },
     onShow: function () {
+        console.log("onShow")
+        //调用展示数据
         this.getIndexData();
         var that = this;
         let userInfo = wx.getStorageSync('userInfo');
@@ -130,7 +136,10 @@ Page({
             }
         });
     },
+    //https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onPullDownRefresh
+    //监听用户下拉刷新事件。
     onPullDownRefresh: function () {
+        console.log("onPullDownRefresh")
         wx.showNavigationBarLoading()
         this.getIndexData();
         this.getChannelShowInfo();

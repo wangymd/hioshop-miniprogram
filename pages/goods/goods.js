@@ -297,6 +297,7 @@ Page({
     },
     onLoad: function(options) {
         let id = 0;
+        //获取请求连接参数
         var scene = decodeURIComponent(options.scene);
         if (scene != 'undefined') {
             id = scene;
@@ -331,6 +332,8 @@ Page({
             autoplay:false
         })
     },
+
+    //查询购物车数量
     getCartCount: function() {
         let that = this;
         util.request(api.CartGoodsCount).then(function(res) {
@@ -381,10 +384,11 @@ Page({
         util.loginNow();
         var that = this;
         let userInfo = wx.getStorageSync('userInfo');
-        let productLength = this.data.productList.length;
         if (userInfo == '') {
             return false;
         }
+
+        let productLength = this.data.productList.length;
         if (this.data.openAttr == false && productLength != 1) {
             //打开规格选择窗口
             this.setData({
@@ -426,6 +430,7 @@ Page({
               title: '',
               mask:true
             })
+            let that = this;//保存已有数据
             util.request(api.CartAdd, {
                     addType: 0,
                     goodsId: this.data.id,
@@ -438,6 +443,7 @@ Page({
                         wx.showToast({
                             title: '添加成功',
                         });
+                        console.log(res.data.cartTotal.goodsCount)
                         if (productLength != 1 || that.data.openAttr == true) {
                             that.setData({
                                 openAttr: !that.data.openAttr,
