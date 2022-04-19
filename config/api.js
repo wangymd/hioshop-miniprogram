@@ -1,4 +1,5 @@
 const ApiRootUrl = 'http://localhost:8360/api/';
+// const ApiRootUrl = 'http://127.0.0.1:8360/api/';
 // const ApiRootUrl = 'http://192.168.0.108:8360/api/';
 // const ApiRootUrl = 'https://www.guxiaoling.com:8466/api/';
 
@@ -54,4 +55,7 @@ module.exports = {
     SettingsDetail: ApiRootUrl + 'settings/userDetail',
     GetBase64: ApiRootUrl + 'qrcode/getBase64', //获取商品详情二维码
 
+    //消息
+    msgs: ApiRootUrl + 'msg/msg', //基本消息
+    msgsWithUser: ApiRootUrl + 'msg/msgsWithUser', //基本消息+用户
 };

@@ -1,0 +1,69 @@
+/* pages/msg/msg.wxss */
+.msgsBox {
+    position: relative;
+    min-height: 100%;
+    align-items: center;
+}
+
+.msgWrap {
+    height: 120rpx;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10rpx;
+}
+
+.icon,.msgText{
+    height: 120rpx;
+    width: 120rpx;
+    margin-top: 10rpx;
+}
+
+.icon .avatar {
+    height: 120rpx;
+    width: 120rpx;
+}
+
+.avatar {
+    display: flex;
+    margin-right: 20rpx;
+    justify-content: center;
+    align-items: center;
+    border-radius: 60rpx;
+}
+
+.msgText {
+    justify-content: center;
+    align-items: center;
+    margin: 5rpx 5rpx;
+    /* display: flex; */
+}
+
+.nickname,.msg {
+    display: flex;
+    height: 50rpx;
+    font-weight: bold;
+    flex-direction: column;
+    margin: 10rpx;
+}
+
+.nickname {
+    font-size: 32rpx;
+}
+
+.msg {
+    width: 500rpx;
+    font-size: 24rpx;
+    /* display: flex; */
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.line {
+    width: 100%;
+    height: 1rpx;
+    background-color: #f3f3f3;
+    /* margin-left: 100rpx; */
+    margin: 10rpx 120rpx;
+}

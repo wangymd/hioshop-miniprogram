@@ -3,6 +3,7 @@
         "pages/index/index",
         "pages/app-auth/index",
         "pages/category/index",
+        "pages/msg/msg",
         "pages/cart/cart",
         "pages/share/index",
         "pages/search/search",
@@ -45,6 +46,12 @@
                 "iconPath": "images/nav/icon-cate-off.png",
                 "selectedIconPath": "images/nav/icon-cate-on.png",
                 "text": "分类"
+            },
+            {
+                "pagePath": "pages/msg/msg",
+                "iconPath": "images/nav/icon-msg-off.png",
+                "selectedIconPath": "images/nav/icon-msg-on.png",
+                "text": "消息"
             },
             {
                 "pagePath": "pages/cart/cart",

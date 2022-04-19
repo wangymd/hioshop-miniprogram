@@ -1,0 +1,15 @@
+<!--pages/msg/msg.wxml-->
+<view class="msgsBox" wx:for="{{msgs}}">
+    <view class="msgWrap">
+        <view class="icon">
+            <image class="avatar" src="{{item.avatar}}"></image>    
+        </view>
+        <view class="msgText">
+            <label class="nickname"> {{item.nickname}}</label>
+            <!-- <View class="msg">{{item.msg}}</View> -->
+            <View class="msg"> <text class="msgDetail">{{item.msg}}</text></View>
+        </view>
+    </view>
+    <View class="line"></View>
+</view>
+

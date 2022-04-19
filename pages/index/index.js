@@ -7,13 +7,13 @@ const app = getApp()
 
 Page({
     data: {
+        banners: [],
+        showBanner: 0,
+        showBannerImg: 0,
+        notices:[],
         floorGoods: [],
         openAttr: false,
         showChannel: 0,
-        showBanner: 0,
-        showBannerImg: 0,
-        banners: [],
-        notices:[],
         index_banner_img: 0,
         userInfo: {},
         imgurl: '',
@@ -60,7 +60,7 @@ Page({
     onShareAppMessage: function () {
         let info = wx.getStorageSync('userInfo');
         return {
-            title: '海风小店',
+            title: '阿明小店',
             desc: '开源微信小程序商城',
             path: '/pages/index/index?id=' + info.id
         }
@@ -73,12 +73,12 @@ Page({
     getIndexData: function () {
         let that = this;
         util.request(api.IndexUrl).then(function (res) {
-            if (res.errno === 0) {
+            if (res.success) {
                 that.setData({
-                    floorGoods: res.data.categoryList,
-                    banners: res.data.banner,
-                    channel: res.data.channel,
-                    notices: res.data.notice,
+                    banners: res.data.banners,
+                    notices: res.data.notices,
+                    channels: res.data.channels,
+                    floorGoods: res.data.categorys,
                     loading: 1,
                 });
                 let cartGoodsCount = '';
@@ -105,24 +105,30 @@ Page({
         //调用展示数据
         this.getIndexData();
         var that = this;
+
+        //获取用户信息
         let userInfo = wx.getStorageSync('userInfo');
         if (userInfo != '') {
             that.setData({
                 userInfo: userInfo,
             });
         };
+
+        //获取系统信息
         let info = wx.getSystemInfoSync();
         let sysHeight = info.windowHeight - 100;
         this.setData({
             sysHeight: sysHeight,
             autoplay:true
         });
+
+        //移除种类id缓存
         wx.removeStorageSync('categoryId');
     },
     getChannelShowInfo: function (e) {
         let that = this;
         util.request(api.ShowSettings).then(function (res) {
-            if (res.errno === 0) {
+            if (res.success) {
                 let show_channel = res.data.channel;
                 let show_banner = res.data.banner;
                 let show_notice = res.data.notice;
