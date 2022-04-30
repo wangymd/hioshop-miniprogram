@@ -10,9 +10,11 @@ Page({
         nowIndex: 0,
         nowId: 0,//选中的种类
         list: [],
-        allPage: 1,
-        allCount: 0,
-        size: 8,
+        initPageNo: 1,
+        initPageSize: 8,
+        pageNo: 1,
+        pageSize: 8,
+        noDataRetryTimes: 0,
         hasInfo: 0,
         showNoMore: 0,
         loading:0,
@@ -23,8 +25,8 @@ Page({
     getChannelShowInfo: function (e) {
         let that = this;
         util.request(api.ShowSettings).then(function (res) {
-            if (res.errno === 0) {
-                let index_banner_img = res.data.index_banner_img;
+            if (res.success) {
+                let index_banner_img = res.data.indexBannerImg;
                 that.setData({
                     index_banner_img: index_banner_img
                 });
@@ -42,12 +44,12 @@ Page({
         let that = this;
         util.request(api.CatalogList).then(function(res) {
             that.setData({
-                navList: res.data.categoryList,
+                navList: res.data,
             });
         });
         util.request(api.GoodsCount).then(function(res) {
             that.setData({
-                goodsCount: res.data.goodsCount
+                goodsCount: res.data
             });
         });
     },
@@ -65,24 +67,22 @@ Page({
 
     //获取当前页
     getCurrentList: function(id) {
-        console.log("getCurrentList")
         let that = this;
-        util.request(api.GetCurrentList, {
-            size: that.data.size,
-            page: that.data.allPage,
-            id: id
+        util.request(api.GetCategoryGoods, {
+            pageSize: that.data.pageSize,
+            pageNo: that.data.pageNo,
+            categoryId: id
         }, 'POST').then(function(res) {
-            if (res.errno === 0) {
-                let count = res.data.count;
+            if (res.success) {
+                let count = res.data.length;
                 that.setData({
-                    allCount: count,
-                    allPage: res.data.currentPage,
-                    list: that.data.list.concat(res.data.data),//将查询数据，追加到集合
+                    list: that.data.list.concat(res.data),//将查询数据，追加到集合
                     showNoMore: 1,
                     loading: 0,
                 });
                 if (count == 0) {
                     that.setData({
+                        noDataRetryTimes: that.data.noDataRetryTimes + 1,
                         hasInfo: 0,
                         showNoMore: 0
                     });
@@ -90,6 +90,7 @@ Page({
             }
         });
     },
+    //展示数据
     onShow: function() {
         this.getChannelShowInfo();
         let id = this.data.nowId;
@@ -101,9 +102,8 @@ Page({
         else if (nowId == 0 && nowId === '') {
             this.setData({
                 list: [],
-                allPage: 1,
-                allCount: 0,
-                size: 8,
+                pageNo: this.data.pageNo,
+                pageSize: this.data.pageSize,
                 loading: 1
             })
             this.getCurrentList(0);
@@ -115,9 +115,8 @@ Page({
         } else if(id != nowId) {
             this.setData({
                 list: [],
-                allPage: 1,
-                allCount: 0,
-                size: 8,
+                pageNo: this.data.pageNo,
+                pageSize: this.data.pageSize,
                 loading: 1
             })
             this.getCurrentList(nowId);
@@ -130,6 +129,8 @@ Page({
         
         this.getCatalog();
     },
+
+    //选择分类
     switchCate: function(e) {
         let id = e.currentTarget.dataset.id;
         let nowId = this.data.nowId;
@@ -138,9 +139,8 @@ Page({
         } else {
             this.setData({
                 list: [],
-                allPage: 1,
-                allCount: 0,
-                size: 8,
+                pageNo: this.data.initPageNo,
+                pageSize: this.data.initPageSize,
                 loading: 1
             })
             if (id == 0) {
@@ -160,17 +160,23 @@ Page({
         }
     },
     onBottom: function() {
+        console.log("onBottom");
         let that = this;
-        if (that.data.allCount / that.data.size < that.data.allPage) {
+        
+        console.log("noDataRetryTimes:" + this.data.noDataRetryTimes);
+        if(this.data.noDataRetryTimes >= 3){
             that.setData({
+                hasInfo: 0,
                 showNoMore: 0
             });
             return false;
         }
         that.setData({
-            allPage: that.data.allPage + 1
+            pageNo: that.data.pageNo + 1
         });
+        console.log("onBottom-pageNo:" + that.data.pageNo);
         let nowId = that.data.nowId;
+        console.log("onBottom-nowId:" + nowId);
         if (nowId == 0 || nowId == undefined) {
             that.getCurrentList(0);
         } else {

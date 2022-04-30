@@ -61,15 +61,15 @@ Page({
     getCartList: function() {
         let that = this;
         util.request(api.CartList).then(function(res) {
-            if (res.errno === 0) {
-                let hasCartGoods = res.data.cartList;
+            if (res.success) {
+                let hasCartGoods = res.data.cartGoods;
                 if (hasCartGoods.length != 0) {
                     hasCartGoods = 1;
                 } else {
                     hasCartGoods = 0;
                 }
                 that.setData({
-                    cartGoods: res.data.cartList,
+                    cartGoods: res.data.cartGoods,
                     cartTotal: res.data.cartTotal,
                     hasCartGoods: hasCartGoods
                 });
@@ -99,7 +99,7 @@ Page({
         this.data.cartGoods.forEach(function(v) {
             if (v.checked == true) {
                 checkedGoodsCount += v.number;
-                checkedGoodsAmount += v.number * v.retail_price
+                checkedGoodsAmount += v.number * v.retailPrice
             }
         });
         this.setData({
@@ -111,7 +111,7 @@ Page({
         let that = this;
         if (!this.data.isEditCart) {
             var productIds = this.data.cartGoods.map(function(v) {
-                return v.product_id;
+                return v.productId;
             });
             util.request(api.CartChecked, {
                 productIds: productIds.join(','),
@@ -196,14 +196,14 @@ Page({
     },
     getCartNum: function() {
         util.request(api.CartGoodsCount).then(function(res) {
-            if (res.errno === 0) {
+            if (res.success) {
                 let cartGoodsCount = '';
-                if (res.data.cartTotal.goodsCount == 0) {
+                if (res.data == 0) {
                     wx.removeTabBarBadge({
                         index: 2,
                     })
                 } else {
-                    cartGoodsCount = res.data.cartTotal.goodsCount + '';
+                    cartGoodsCount = res.data + '';
                     wx.setTabBarBadge({
                         index: 2,
                         text: cartGoodsCount

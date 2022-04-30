@@ -1,5 +1,4 @@
 const ApiRootUrl = 'http://localhost:8360/api/';
-// const ApiRootUrl = 'http://127.0.0.1:8360/api/';
 // const ApiRootUrl = 'http://192.168.0.108:8360/api/';
 // const ApiRootUrl = 'https://www.guxiaoling.com:8466/api/';
 
@@ -9,9 +8,9 @@ module.exports = {
     // 首页
     IndexUrl: ApiRootUrl + 'index/appInfo', //首页数据接口
     // 分类
-    CatalogList: ApiRootUrl + 'catalog/index', //分类目录全部分类数据接口
-    CatalogCurrent: ApiRootUrl + 'catalog/current', //分类目录当前分类数据接口
-    GetCurrentList: ApiRootUrl + 'catalog/currentlist',
+    CatalogList: ApiRootUrl + 'category/getAll', //分类目录全部分类数据接口
+    CatalogCurrent: ApiRootUrl + 'category/getById', //分类目录当前分类数据接口
+    GetCategoryGoods: ApiRootUrl + 'goods/getGoodsByCategoryIdWithPage',
     // 购物车
     CartAdd: ApiRootUrl + 'cart/add', // 添加商品到购物车
     CartList: ApiRootUrl + 'cart/index', //获取购物车的数据
@@ -22,7 +21,7 @@ module.exports = {
     CartCheckout: ApiRootUrl + 'cart/checkout', // 下单前信息确认
     // 商品
     GoodsCount: ApiRootUrl + 'goods/count', //统计商品总数
-    GoodsDetail: ApiRootUrl + 'goods/detail', //获得商品的详情
+    GoodsDetail: ApiRootUrl + 'goods/getDetailById', //获得商品的详情
     GoodsList: ApiRootUrl + 'goods/list', //获得商品列表
     GoodsShare: ApiRootUrl + 'goods/goodsShare', //获得商品的详情
     SaveUserId: ApiRootUrl + 'goods/saveUserId',

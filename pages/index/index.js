@@ -97,11 +97,9 @@ Page({
         });
     },
     onLoad: function (options) {
-        console.log("onLoad")
         this.getChannelShowInfo();
     },
     onShow: function () {
-        console.log("onShow")
         //调用展示数据
         this.getIndexData();
         var that = this;
@@ -132,7 +130,7 @@ Page({
                 let show_channel = res.data.channel;
                 let show_banner = res.data.banner;
                 let show_notice = res.data.notice;
-                let index_banner_img = res.data.index_banner_img;
+                let index_banner_img = res.data.indexBannerImg;
                 that.setData({
                     show_channel: show_channel,
                     show_banner: show_banner,
